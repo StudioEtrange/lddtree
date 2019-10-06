@@ -371,9 +371,9 @@ shift $(( $OPTIND - 1))
 ${SET_X} && set -x
 
 if [ -z "${BACKEND}" ]; then
-	if which scanelf >/dev/null; then
+	if which scanelf >/dev/null 2>&1; then
 		BACKEND=scanelf
-	elif which readelf >/dev/null; then
+	elif which readelf >/dev/null 2>&1; then
 		BACKEND=readelf
 	else
 		error "This tool needs either scanelf or readelf"
