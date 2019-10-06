@@ -69,9 +69,12 @@ elf_specs_scanelf() {
 
 
 
+# WARN : readelf output depend on local language
 # functions for readelf backend
 elf_rpath_readelf() {
-	readelf -d "$1" | awk '$2 == "(RPATH)" || $2 == "(RUNPATH)" { print $5 }' | cut -d '[' -f 2 | sed 's/]//'
+	local rpath="$(readelf -d "$1" | grep "RPATH" | grep -o -E "\[[^]]*\]" | grep -o -E "[^][]*" | tr '\n' ',' | sed 's/,$//')"
+	local runpath="$(readelf -d "$1" | grep "RUNPATH" | grep -o -E "\[[^]]*\]" | grep -o -E "[^][]*" | tr '\n' ',' | sed 's/,$//')"
+	[ -z "${runpath}" ] && echo "$rpath" || echo "$runpath"
 }
 
 elf_interp_readelf() {
