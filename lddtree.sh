@@ -194,6 +194,9 @@ find_elf() {
 			*/ld-linux*|*/ld.so*) # glibc
 				read_ldso_conf "${ROOT}"etc/ld.so.conf
 				;;
+			"") # when '.interp' does not exist, load ld.so.conf, even if we are not sure of the use of glibc
+        		read_ldso_conf "${ROOT}"etc/ld.so.conf
+				;;
 			esac
 			cd "$_oldpwd"
 		fi
